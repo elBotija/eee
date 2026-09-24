@@ -14,10 +14,18 @@ function updateDisplay() {
   timeDisplay.textContent = `${m}:${s}`;
 }
 
+function setPlayIcon() {
+  toggleBtn.innerHTML = '<svg class="ml-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+}
+
+function setPauseIcon() {
+  toggleBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+}
+
 function toggleTimer() {
   if (isRunning) {
     clearInterval(timerId);
-    toggleBtn.textContent = '▶';
+    setPlayIcon();
     isRunning = false;
   } else {
     timerId = setInterval(() => {
@@ -26,14 +34,14 @@ function toggleTimer() {
         updateDisplay();
       } else {
         clearInterval(timerId);
-        toggleBtn.textContent = '▶';
+        setPlayIcon();
         isRunning = false;
         // Animación al terminar
         timeDisplay.classList.add('text-emerald-500', 'animate-pulse');
         setTimeout(() => timeDisplay.classList.remove('text-emerald-500', 'animate-pulse'), 5000);
       }
     }, 1000);
-    toggleBtn.textContent = '⏸';
+    setPauseIcon();
     isRunning = true;
   }
 }
@@ -42,7 +50,7 @@ function resetTimer() {
   clearInterval(timerId);
   isRunning = false;
   timeLeft = currentDuration;
-  toggleBtn.textContent = '▶';
+  setPlayIcon();
   updateDisplay();
 }
 

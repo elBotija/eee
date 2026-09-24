@@ -13,20 +13,21 @@ export async function initTasks(config) {
   statusEl.className = "text-sm text-blue-400 font-medium bg-blue-400/10 px-3 py-1 rounded-full border border-blue-400/20";
 
   try {
-    // Para no requerir backend ni oauth, el sheet debe estar publicado en la web como CSV.
-    // URL: https://docs.google.com/spreadsheets/d/{sheetId}/export?format=csv
-    const url = `https://docs.google.com/spreadsheets/d/${config.sheetId}/export?format=csv`;
+    // Usamos el endpoint JSON de visualización (gviz) en lugar de CSV.
+    // Esto evita la redirección (307) que bloquea el polyfill de fetch en iOS 9.
+    const url = `https://docs.google.com/spreadsheets/d/${config.sheetId}/gviz/tq?tqx=out:json`;
     const response = await fetch(url);
     
     if (!response.ok) throw new Error('Sheet no público o ID incorrecto');
     
-    const csvText = await response.text();
-    // Reemplazamos los retornos de carro \r y dividimos por líneas \n
-    const rows = csvText.replace(/\r/g, '').split('\n').map(row => row.split(','));
+    const text = await response.text();
+    // El texto viene envuelto en una función, extraemos solo el JSON:
+    const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+    const data = JSON.parse(jsonString);
+    const rows = data.table.rows || [];
     
-    // Filtramos las filas vacías. Columna 0: Tarea, Columna 1: Estado/Fecha (opcional)
-    // Ya no saltamos la fila 1 (slice), tomamos todo desde la fila 1 (A1).
-    const tasks = rows.filter(r => r[0] && r[0].trim() !== '');
+    // Filtramos las filas. Columna 0: Tarea, Columna 1: Estado/Fecha (opcional)
+    const tasks = rows.filter(r => r && r.c && r.c[0] && r.c[0].v !== null && r.c[0].v.toString().trim() !== '');
 
     listEl.innerHTML = ''; // Limpiar
     
@@ -34,12 +35,15 @@ export async function initTasks(config) {
       listEl.innerHTML = '<li class="text-zinc-500 italic text-center mt-4">Todo limpio 🎉</li>';
     } else {
       tasks.slice(0, 8).forEach(task => {
+        const title = task.c[0].v.toString();
+        const subtitle = (task.c[1] && task.c[1].v !== null) ? task.c[1].v.toString() : '';
+        
         const li = document.createElement('li');
         li.className = "flex items-center gap-3";
         li.innerHTML = `
           <div class="w-4 h-4 rounded-full border-2 border-emerald-500 flex-shrink-0"></div>
-          <span class="truncate">${task[0].replace(/"/g, '')}</span>
-          ${task[1] ? `<span class="ml-auto text-sm text-zinc-500">${task[1].replace(/"/g, '')}</span>` : ''}
+          <span class="truncate">${title}</span>
+          ${subtitle ? `<span class="ml-auto text-sm text-zinc-500">${subtitle}</span>` : ''}
         `;
         listEl.appendChild(li);
       });
