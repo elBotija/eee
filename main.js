@@ -1,3 +1,4 @@
+import 'whatwg-fetch'
 import './style.css'
 import { initWeather } from './weather.js'
 import { initPomodoro } from './pomodoro.js'
