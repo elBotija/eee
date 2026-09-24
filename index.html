@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>iPad Viewer</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; }
+    </style>
+  </head>
+  <body class="h-screen w-screen flex items-center justify-center bg-zinc-950">
+    
+    <div class="grid grid-cols-1 md:grid-cols-6 grid-rows-2 gap-6 p-6 h-screen w-screen max-h-screen overflow-hidden">
+      
+      <!-- Reloj (Ocupa más espacio) -->
+      <div class="col-span-1 md:col-span-2 flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-2xl backdrop-blur-sm p-10">
+        <div id="clock" class="text-8xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500 drop-shadow-lg">--:--</div>
+        <div id="date" class="text-2xl md:text-4xl text-zinc-400 mt-4 font-light tracking-wide uppercase">Cargando...</div>
+      </div>
+
+      <!-- Clima -->
+      <div class="col-span-1 md:col-span-2 flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8">
+        <h2 class="text-xl text-zinc-500 font-semibold mb-4 uppercase tracking-widest">Clima</h2>
+        <div class="flex items-center gap-3 mb-2">
+          <span id="weather-icon" class="text-5xl">☁️</span>
+          <div id="weather-temp" class="text-6xl font-bold">--°</div>
+        </div>
+        <div class="text-zinc-400 text-lg text-center mt-2 leading-relaxed">
+          Ramos Mejía <span id="weather-desc" class="text-zinc-500 text-sm block">Cargando...</span>
+          <div class="mt-1 text-base">
+            ST: <span id="weather-feels">--</span>° &nbsp;|&nbsp; 
+            H: <span id="weather-max">--</span>° &nbsp;L: <span id="weather-min">--</span>°
+          </div>
+        </div>
+      </div>
+
+      <!-- Pomodoro -->
+      <div class="col-span-1 md:col-span-2 bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col justify-center items-center">
+        <h2 class="text-xl text-zinc-500 font-semibold mb-2 uppercase tracking-widest">Pomodoro</h2>
+        <div id="pomodoro-time" class="text-7xl font-bold mb-4 font-mono tracking-tighter">25:00</div>
+        
+        <div class="flex gap-2 mb-4">
+          <button class="pomodoro-set-btn text-xs font-semibold px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded-full text-zinc-400 hover:text-white transition-colors" data-mins="5">5m</button>
+          <button class="pomodoro-set-btn text-xs font-semibold px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded-full text-zinc-400 hover:text-white transition-colors" data-mins="10">10m</button>
+          <button class="pomodoro-set-btn text-xs font-semibold px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded-full text-zinc-400 hover:text-white transition-colors" data-mins="15">15m</button>
+          <button class="pomodoro-set-btn text-xs font-semibold px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded-full text-zinc-400 hover:text-white transition-colors" data-mins="20">20m</button>
+          <button class="pomodoro-set-btn text-xs font-semibold px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded-full text-zinc-400 hover:text-white transition-colors" data-mins="25">25m</button>
+        </div>
+
+        <div class="flex gap-4">
+          <button id="pomodoro-toggle" class="bg-emerald-600 hover:bg-emerald-500 text-white rounded-full w-14 h-14 flex items-center justify-center text-xl transition-colors shadow-lg shadow-emerald-900/50">▶</button>
+          <button id="pomodoro-reset" class="bg-zinc-800 hover:bg-zinc-700 text-white rounded-full w-14 h-14 flex items-center justify-center text-xl transition-colors">■</button>
+        </div>
+      </div>
+
+      <!-- Tareas Pendientes -->
+      <div class="col-span-1 md:col-span-3 bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col min-h-0 overflow-hidden">
+        <div class="flex justify-between items-center mb-6 shrink-0">
+          <h2 class="text-xl text-zinc-500 font-semibold uppercase tracking-widest">Próximos Pendientes</h2>
+          <span id="tasks-status" class="text-sm text-amber-500 font-medium bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Sin configurar</span>
+        </div>
+        <ul id="tasks-list" class="flex flex-col gap-4 overflow-y-auto h-full text-xl text-zinc-300 pr-2 pb-4">
+          <li class="text-zinc-500 italic text-center mt-4">Agrega el ID de tu Google Sheet en Ajustes</li>
+        </ul>
+      </div>
+
+      <!-- Spotify -->
+      <div class="col-span-1 md:col-span-3 bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-6 flex flex-row items-center gap-6 relative overflow-hidden group min-h-0">
+        <div id="spotify-bg" class="absolute inset-0 bg-cover bg-center opacity-20 blur-2xl scale-110 transition-all duration-1000 hidden z-0"></div>
+        <img id="spotify-cover" src="" alt="Cover" class="w-32 h-32 rounded-2xl shadow-2xl z-10 hidden object-cover shrink-0">
+        <div id="spotify-placeholder" class="w-32 h-32 flex items-center justify-center bg-zinc-800/80 rounded-2xl z-10 text-5xl shadow-inner shrink-0">🎵</div>
+        <div class="flex-1 z-10 min-w-0">
+          <div class="text-sm font-semibold text-emerald-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+            <span id="spotify-pulse" class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse hidden"></span>
+            <span id="spotify-status">Desconectado</span>
+          </div>
+          <h3 id="spotify-title" class="text-3xl font-bold text-white truncate">Falta Client ID</h3>
+          <p id="spotify-artist" class="text-xl text-zinc-400 truncate mt-1">Configura en Ajustes</p>
+          <button id="spotify-login-btn" class="mt-4 px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-full transition-colors hidden shadow-lg shadow-emerald-900/50">Vincular cuenta</button>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Botón de ajustes (esquina inferior derecha) -->
+    <button id="settingsBtn" class="fixed bottom-4 right-4 opacity-5 hover:opacity-100 transition-opacity p-2 text-zinc-500 hover:text-white cursor-pointer z-40">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    </button>
+
+    <!-- Modal de Ajustes -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-lg shadow-2xl">
+        <h2 class="text-2xl font-bold text-white mb-6">Configuración Privada</h2>
+        
+        <form id="settingsForm" class="flex flex-col gap-4">
+          <div>
+            <label class="block text-zinc-400 text-sm font-semibold mb-2">Google Sheets ID (Tareas y Eventos)</label>
+            <input type="text" id="sheetIdInput" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500" placeholder="Ej: 1BxiMvs0XRYFgwn...">
+            <p class="text-xs text-zinc-500 mt-1">El documento debe estar publicado o con acceso "Cualquiera con el enlace".</p>
+          </div>
+          
+          <div>
+            <label class="block text-zinc-400 text-sm font-semibold mb-2">Spotify Client ID</label>
+            <input type="text" id="spotifyIdInput" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500" placeholder="Desde el Dashboard de Spotify Developer">
+          </div>
+
+          <div class="flex justify-end gap-3 mt-4">
+            <button type="button" id="closeSettingsBtn" class="px-5 py-2 rounded-lg font-medium text-zinc-300 hover:bg-zinc-800 transition-colors">Cancelar</button>
+            <button type="submit" class="px-5 py-2 rounded-lg font-medium bg-white text-black hover:bg-zinc-200 transition-colors">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
