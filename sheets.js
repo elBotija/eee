@@ -39,10 +39,10 @@ export async function initTasks(config) {
         const subtitle = (task.c[1] && task.c[1].v !== null) ? task.c[1].v.toString() : '';
         
         const li = document.createElement('li');
-        li.className = "flex items-center gap-3";
+        li.className = "flex items-center mb-4";
         li.innerHTML = `
-          <div class="w-4 h-4 rounded-full border-2 border-emerald-500 flex-shrink-0"></div>
-          <span class="truncate">${title}</span>
+          <div class="w-4 h-4 rounded-full border-2 border-emerald-500 flex-shrink-0 mr-3"></div>
+          <span class="truncate mr-3">${title}</span>
           ${subtitle ? `<span class="ml-auto text-sm text-zinc-500">${subtitle}</span>` : ''}
         `;
         listEl.appendChild(li);
