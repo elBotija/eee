@@ -19,13 +19,13 @@
       <!-- Fila 1 -->
       <div class="flex flex-row h-1/2 w-full justify-between mb-6">
         <!-- Reloj (Ocupa más espacio) -->
-        <div class="w-[32%] flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-2xl backdrop-blur-sm p-10">
+        <div class="w-[32%] h-full flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-2xl backdrop-blur-sm p-10">
         <div id="clock" class="text-8xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500 drop-shadow-lg">--:--</div>
-        <div id="date" class="text-2xl md:text-4xl text-zinc-400 mt-4 font-light tracking-wide uppercase">Cargando...</div>
+        <div id="date" class="text-xl md:text-2xl text-zinc-400 mt-4 font-light tracking-wide uppercase">Cargando...</div>
         </div>
 
         <!-- Clima -->
-        <div class="w-[32%] flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8">
+        <div class="w-[32%] h-full flex flex-col justify-center items-center bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8">
         <h2 class="text-xl text-zinc-500 font-semibold mb-4 uppercase tracking-widest">Clima</h2>
         <div class="flex items-center mb-2">
           <span id="weather-icon" class="text-5xl mr-3">☁️</span>
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Pomodoro -->
-        <div class="w-[32%] bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col justify-center items-center">
+        <div class="w-[32%] h-full bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col justify-center items-center">
         <h2 class="text-xl text-zinc-500 font-semibold mb-2 uppercase tracking-widest">Pomodoro</h2>
         <div id="pomodoro-time" class="text-7xl font-bold mb-4 font-mono tracking-tighter">25:00</div>
         
@@ -67,18 +67,18 @@
       <!-- Fila 2 -->
       <div class="flex flex-row h-1/2 w-full justify-between min-h-0">
         <!-- Tareas Pendientes -->
-        <div class="w-[48%] bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col min-h-0 overflow-hidden">
+        <div class="w-[48%] h-full bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-8 flex flex-col min-h-0 overflow-hidden">
         <div class="flex justify-between items-center mb-6 shrink-0">
           <h2 class="text-xl text-zinc-500 font-semibold uppercase tracking-widest">Próximos Pendientes</h2>
           <span id="tasks-status" class="text-sm text-amber-500 font-medium bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Sin configurar</span>
         </div>
-        <ul id="tasks-list" class="block overflow-y-auto h-full text-xl text-zinc-300 pr-2 pb-4">
+        <ul id="tasks-list" class="block flex-1 min-h-0 overflow-y-auto text-xl text-zinc-300 pr-2 pb-4">
           <li class="text-zinc-500 italic text-center mt-4">Agrega el ID de tu Google Sheet en Ajustes</li>
         </ul>
         </div>
 
         <!-- Spotify -->
-        <div class="w-[48%] bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-6 flex flex-row items-center relative overflow-hidden group min-h-0">
+        <div class="w-[48%] h-full bg-zinc-900/50 rounded-3xl border border-zinc-800 shadow-xl p-6 flex flex-row items-center relative overflow-hidden group min-h-0">
         <div id="spotify-bg" class="absolute inset-0 bg-cover bg-center opacity-20 blur-2xl scale-110 transition-all duration-1000 hidden z-0"></div>
         <img id="spotify-cover" src="" alt="Cover" class="w-32 h-32 rounded-2xl shadow-2xl z-10 hidden object-cover shrink-0 mr-6">
         <div id="spotify-placeholder" class="w-32 h-32 flex items-center justify-center bg-zinc-800/80 rounded-2xl z-10 text-5xl shadow-inner shrink-0 mr-6">🎵</div>
