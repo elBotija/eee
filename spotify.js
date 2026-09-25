@@ -106,6 +106,22 @@ export async function initSpotify(config) {
   const cover = document.getElementById('spotify-cover');
   const placeholder = document.getElementById('spotify-placeholder');
   const bg = document.getElementById('spotify-bg');
+  
+  const albumModal = document.getElementById('albumModal');
+  const albumModalImg = document.getElementById('albumModalImg');
+
+  cover.addEventListener('click', () => {
+    if (cover.src && !cover.classList.contains('hidden')) {
+      albumModalImg.src = cover.src;
+      albumModal.classList.remove('hidden');
+      albumModal.classList.add('flex');
+    }
+  });
+
+  albumModal.addEventListener('click', () => {
+    albumModal.classList.add('hidden');
+    albumModal.classList.remove('flex');
+  });
 
   // Si volvemos del login
   const urlParams = new URLSearchParams(window.location.search);
