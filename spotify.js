@@ -12,10 +12,12 @@ function generateRandomString(length) {
   return text;
 }
 
+import CryptoJS from 'crypto-js';
+
 async function generateCodeChallenge(codeVerifier) {
-  const data = new TextEncoder().encode(codeVerifier);
-  const digest = await window.crypto.subtle.digest('SHA-256', data);
-  return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+  const hash = CryptoJS.SHA256(codeVerifier);
+  const base64 = CryptoJS.enc.Base64.stringify(hash);
+  return base64
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '');
