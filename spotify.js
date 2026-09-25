@@ -121,7 +121,15 @@ export async function initSpotify(config) {
     return;
   }
 
-  const accessToken = localStorage.getItem('spotify_access_token');
+  let accessToken = localStorage.getItem('spotify_access_token');
+  const savedRefreshToken = localStorage.getItem('spotify_refresh_token');
+  
+  // Bypass automático: Si cargaron el refresh_token a mano pero no hay access_token
+  if (!accessToken && savedRefreshToken) {
+    status.textContent = "Renovando...";
+    await refreshToken(config.spotifyId);
+    accessToken = localStorage.getItem('spotify_access_token');
+  }
   
   if (!accessToken) {
     status.textContent = "Requiere Login";

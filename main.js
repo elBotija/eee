@@ -41,6 +41,7 @@ function loadSettings() {
   const config = JSON.parse(localStorage.getItem('ipdaViewerConfig') || '{}');
   sheetIdInput.value = config.sheetId || '';
   spotifyIdInput.value = config.spotifyId || '';
+  document.getElementById('spotifyRefreshInput').value = localStorage.getItem('spotify_refresh_token') || '';
   return config;
 }
 
@@ -68,6 +69,11 @@ settingsForm.addEventListener('submit', (e) => {
     sheetId: sheetIdInput.value.trim(),
     spotifyId: spotifyIdInput.value.trim()
   };
+  
+  const manualRefreshToken = document.getElementById('spotifyRefreshInput').value.trim();
+  if (manualRefreshToken) {
+    localStorage.setItem('spotify_refresh_token', manualRefreshToken);
+  }
   
   localStorage.setItem('ipdaViewerConfig', JSON.stringify(newConfig));
   currentConfig = newConfig;
