@@ -85,3 +85,29 @@ settingsForm.addEventListener('submit', (e) => {
   initTasks(currentConfig);
   initSpotify(currentConfig);
 });
+
+// --- Screensaver ---
+const screensaver = document.getElementById('screensaver');
+let inactivityTimer;
+const SCREENSAVER_DELAY = 60000; // 1 minuto en milisegundos
+
+function resetInactivity() {
+  if (!screensaver.classList.contains('opacity-0')) {
+    // Si estaba negro, lo ocultamos y evitamos que este tap registre clicks en la UI debajo
+    screensaver.classList.add('opacity-0');
+    screensaver.classList.add('pointer-events-none');
+  }
+  
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    screensaver.classList.remove('opacity-0');
+    screensaver.classList.remove('pointer-events-none');
+  }, SCREENSAVER_DELAY);
+}
+
+// Escuchar interacciones en todo el documento para resetear el reloj de inactividad
+['touchstart', 'mousemove', 'click', 'keydown'].forEach(evt => {
+  document.addEventListener(evt, resetInactivity, { passive: true });
+});
+
+resetInactivity();
