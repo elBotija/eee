@@ -52,4 +52,16 @@ export function initWeather() {
   fetchWeather();
   // Actualizar cada 15 minutos (900000 ms)
   setInterval(fetchWeather, 900000);
+
+  const refreshBtn = document.getElementById('weather-refresh-btn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      const svg = refreshBtn.querySelector('svg');
+      if (svg) svg.classList.add('animate-spin');
+      
+      fetchWeather().finally(() => {
+        if (svg) setTimeout(() => svg.classList.remove('animate-spin'), 500);
+      });
+    });
+  }
 }
