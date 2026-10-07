@@ -1,7 +1,7 @@
-// Coordenadas para Ramos Mejía, Buenos Aires
-const LAT = -34.6406;
-const LON = -58.5636;
-
+// Coordenadas por defecto (Ramos Mejía)
+let currentLat = -34.6406;
+let currentLon = -58.5636;
+let weatherInterval = null;
 const weatherCodeMap = {
   0: { desc: 'Despejado', icon: '☀️' },
   1: { desc: 'Mayormente despejado', icon: '🌤️' },
@@ -25,7 +25,7 @@ const weatherCodeMap = {
 
 export async function fetchWeather() {
   try {
-    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FSao_Paulo`);
+    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&current=temperature_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FSao_Paulo`);
     
     if (!response.ok) throw new Error("Error fetching weather");
     const data = await response.json();
@@ -48,15 +48,28 @@ export async function fetchWeather() {
   }
 }
 
-export function initWeather() {
+export function initWeather(config) {
+  if (config) {
+    currentLat = config.lat || -34.6406;
+    currentLon = config.lon || -58.5636;
+  }
+  
   fetchWeather();
+  
+  // Limpiar intervalo anterior si existe
+  if (weatherInterval) clearInterval(weatherInterval);
+  
   // Actualizar cada 15 minutos (900000 ms)
-  setInterval(fetchWeather, 900000);
+  weatherInterval = setInterval(fetchWeather, 900000);
 
   const refreshBtn = document.getElementById('weather-refresh-btn');
   if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => {
-      const svg = refreshBtn.querySelector('svg');
+    // Remover event listeners anteriores clonando el nodo para evitar múltiples listeners
+    const newRefreshBtn = refreshBtn.cloneNode(true);
+    refreshBtn.parentNode.replaceChild(newRefreshBtn, refreshBtn);
+    
+    newRefreshBtn.addEventListener('click', () => {
+      const svg = newRefreshBtn.querySelector('svg');
       if (svg) svg.classList.add('animate-spin');
       
       fetchWeather().finally(() => {

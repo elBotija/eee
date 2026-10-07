@@ -24,7 +24,6 @@ function updateClock() {
 // Iniciar módulos
 updateClock();
 setInterval(updateClock, 1000);
-initWeather();
 initPomodoro();
 
 // --- Configuración (Settings Modal) ---
@@ -35,12 +34,16 @@ const settingsForm = document.getElementById('settingsForm');
 
 const sheetIdInput = document.getElementById('sheetIdInput');
 const spotifyIdInput = document.getElementById('spotifyIdInput');
+const latInput = document.getElementById('latInput');
+const lonInput = document.getElementById('lonInput');
 
 // Cargar configuración guardada al inicio
 function loadSettings() {
   const config = JSON.parse(localStorage.getItem('ipdaViewerConfig') || '{}');
   sheetIdInput.value = config.sheetId || '';
   spotifyIdInput.value = config.spotifyId || '';
+  latInput.value = config.lat || '-34.6406';
+  lonInput.value = config.lon || '-58.5636';
   document.getElementById('spotifyRefreshInput').value = localStorage.getItem('spotify_refresh_token') || '';
   return config;
 }
@@ -49,6 +52,7 @@ function loadSettings() {
 let currentConfig = loadSettings();
 initTasks(currentConfig);
 initSpotify(currentConfig);
+initWeather(currentConfig);
 
 // Eventos del Modal
 settingsBtn.addEventListener('click', () => {
@@ -67,7 +71,9 @@ settingsForm.addEventListener('submit', (e) => {
   
   const newConfig = {
     sheetId: sheetIdInput.value.trim(),
-    spotifyId: spotifyIdInput.value.trim()
+    spotifyId: spotifyIdInput.value.trim(),
+    lat: latInput.value.trim() || '-34.6406',
+    lon: lonInput.value.trim() || '-58.5636'
   };
   
   const manualRefreshToken = document.getElementById('spotifyRefreshInput').value.trim();
@@ -84,6 +90,7 @@ settingsForm.addEventListener('submit', (e) => {
   // Recargar los módulos que dependen de la config
   initTasks(currentConfig);
   initSpotify(currentConfig);
+  initWeather(currentConfig);
 });
 
 // --- Screensaver ---

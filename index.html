@@ -33,7 +33,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
         </button>
         <div class="flex items-center mb-2">
-          <span id="weather-icon" class="mr-4" style="font-size: 72px; line-height: 1;">☁️</span>
+          <span id="weather-icon" class="inline-block mr-8 ml-4" style="font-size: 36px; -webkit-transform: scale(2.2); transform: scale(2.2); -webkit-transform-origin: center; transform-origin: center; line-height: 1;">☁️</span>
           <div id="weather-temp" class="text-7xl font-bold">--°</div>
         </div>
         <div class="text-zinc-400 text-lg text-center mt-2 leading-relaxed">
@@ -126,6 +126,17 @@
           <div>
             <label class="block text-zinc-400 text-sm font-semibold mb-2">Spotify Refresh Token (Bypass para iPad)</label>
             <input type="text" id="spotifyRefreshInput" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500" placeholder="Logueate desde tu PC, copiá el token y pegalo acá">
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-zinc-400 text-sm font-semibold mb-2">Latitud (Clima)</label>
+              <input type="text" id="latInput" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500" placeholder="-34.6406">
+            </div>
+            <div class="flex-1">
+              <label class="block text-zinc-400 text-sm font-semibold mb-2">Longitud (Clima)</label>
+              <input type="text" id="lonInput" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500" placeholder="-58.5636">
+            </div>
           </div>
 
           <div class="flex justify-end gap-3 mt-4">
